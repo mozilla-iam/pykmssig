@@ -34,10 +34,6 @@ def sign(ctxt={}, file_stream=None):
     plaintext_key = data_key.get('Plaintext')
     ciphertext_key = data_key.get('CiphertextBlob')
 
-    print(base64.b64encode(ciphertext_key))
-
-    print(base64.b64encode(plaintext_key))
-
     iv = os.urandom(12)
 
     encryptor = Cipher(
