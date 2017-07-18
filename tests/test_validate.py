@@ -33,16 +33,24 @@ class ValidationTest(unittest.TestCase):
         }
 
         from pykmssig.validate import verify
-        result = verify(file_stream='foobar', signature=signature)
+        result = verify(file_stream='foobar', sigs_b=signature)
         mock_kms.decrypt.assert_called_once_with(
             CiphertextBlob=test_kms_data['CiphertextBlob'],
             EncryptionContext={}
         )
 
+        print(result)
+
         expected_result = {
             'status': 'valid',
-            'sig_b': b'U05jVK2Ewp286h3Ksr6Cc2GWMQT+9dG3Pxt0Wb5VEoPWGzTPfcNWxGFb5LHa9zyDs4rqUDc7kgzbXPKrRXCgmQ==',
-            'sig_a': b'U05jVK2Ewp286h3Ksr6Cc2GWMQT+9dG3Pxt0Wb5VEoPWGzTPfcNWxGFb5LHa9zyDs4rqUDc7kgzbXPKrRXCgmQ=='
+            'sigs_a': {
+                'sha256': '534e6354ad84c29dbcea1dcab2be827361963104fef5d1b73f1b7459be551283d61b34cf7dc356c4615be4b1daf73c83b38aea50373b920cdb5cf2ab4570a099',
+                'blake2': 'db5ac5b6afff256d8c0cc123fb00aa35e4cf41ebfcba0444eb027e1cec2a3741c25e3176743801b0a46af5a0515eddf7a7255928a3b45d461ffd951471578bdf'
+            },
+            'sigs_b': {
+                'sha256': '534e6354ad84c29dbcea1dcab2be827361963104fef5d1b73f1b7459be551283d61b34cf7dc356c4615be4b1daf73c83b38aea50373b920cdb5cf2ab4570a099',
+                'blake2': 'db5ac5b6afff256d8c0cc123fb00aa35e4cf41ebfcba0444eb027e1cec2a3741c25e3176743801b0a46af5a0515eddf7a7255928a3b45d461ffd951471578bdf'
+            }
         }
 
         self.assertEqual(expected_result, result)
@@ -66,17 +74,25 @@ class ValidationTest(unittest.TestCase):
         }
 
         from pykmssig.validate import verify
-        result = verify(file_stream='foobar-bad', signature=signature)
-
+        result = verify(file_stream='foobar-bad', sigs_b=signature)
+        print(result)
         mock_kms.decrypt.assert_called_once_with(
             CiphertextBlob=test_kms_data['CiphertextBlob'],
             EncryptionContext={}
         )
 
+        print(result)
+
         expected_result = {
             'status': 'invalid',
-            'sig_b': b'5VP0o05TwPEiIXVCKgaLjRyJ6+ANJTzctk1jX5vEWQGOfwp3zrWeWG/XDDXjJreX+YW7Tdnroz8PiophhTSQfQ==',
-            'sig_a': b'U05jVK2Ewp286h3Ksr6Cc2GWMQT+9dG3Pxt0Wb5VEoPWGzTPfcNWxGFb5LHa9zyDs4rqUDc7kgzbXPKrRXCgmQ=='
-        }
+            'sigs_a': {
+                'sha256': 'e553f4a34e53c0f1222175422a068b8d1c89ebe00d253cdcb64d635f9bc459018e7f0a77ceb59e586fd70c35e326b797f985bb4dd9eba33f0f8a8a618534907d',
+                'blake2': 'd9feff30bc81c0bf96d787a804ba59ab4ad360f0c5b99ce7ed4b6eaf9884ea846aac54683eb1a76b56648e43ec1c20468dcb2028ce0ab2fa116af930e1b1ce7c'
+            },
+            'sigs_b': {
+                'sha256': '534e6354ad84c29dbcea1dcab2be827361963104fef5d1b73f1b7459be551283d61b34cf7dc356c4615be4b1daf73c83b38aea50373b920cdb5cf2ab4570a099',
+                'blake2': 'db5ac5b6afff256d8c0cc123fb00aa35e4cf41ebfcba0444eb027e1cec2a3741c25e3176743801b0a46af5a0515eddf7a7255928a3b45d461ffd951471578bdf'
+            }
+       }
 
         self.assertEqual(expected_result, result)

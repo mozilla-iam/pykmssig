@@ -35,7 +35,8 @@ class EncryptionTest(unittest.TestCase):
         }
 
         from pykmssig.sign import sign
-        self.assertEqual(expected_result, sign(file_stream='foobar'))
+        result = sign(file_stream='foobar')
+        self.assertEqual(expected_result, result)
         mock_kms.generate_data_key.assert_called_once_with(
             KeyId=self.test_artifacts['dummy_kms_arn'],
             KeySpec='AES_256',
