@@ -1,8 +1,8 @@
-import base64
 import boto3
+import json
 import os
 
-from hashlib import sha512
+from pykmssig.hashes import get_digests
 from pykmssig import settings
 
 from cryptography.hazmat.backends import default_backend
@@ -14,15 +14,8 @@ kms = boto3.client('kms')
 
 
 def sign(ctxt={}, file_stream=None):
-    # Hash the file stream using sha-512
-    h = sha512()
 
-    b_file_stream = base64.b64encode(file_stream.encode())
-    h.update(b_file_stream)
-
-    # return a digest of the hash
-    digest = h.digest()
-
+    digests = get_digests(file_stream)
     # Use the digest as plaintext
     # encrypt against the KMS key with optional context
     data_key = kms.generate_data_key(
@@ -42,12 +35,16 @@ def sign(ctxt={}, file_stream=None):
         backend=default_backend()
     ).encryptor()
 
-    ciphertext = encryptor.update(digest) + encryptor.finalize()
+    ciphertext = encryptor.update(
+        json.dumps(digests).encode('utf-8')
+    ) + encryptor.finalize()
 
-    return {
+    result = {
         'ciphertext': ciphertext,
         'ciphertext_key': ciphertext_key,
         'iv': iv,
         'tag': encryptor.tag
 
     }
+
+    return result

@@ -1,7 +1,7 @@
-import base64
 import boto3
+import json
 
-from hashlib import sha512
+from pykmssig.hashes import get_digests
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import algorithms
@@ -11,7 +11,7 @@ from cryptography.hazmat.primitives.ciphers import modes
 kms = boto3.client('kms')
 
 
-def verify(ctxt={}, file_stream=None, signature=None):
+def verify(ctxt={}, file_stream=None, sigs_b=None):
     """Signature verification function.
 
     :ctxt encryption context
@@ -22,41 +22,36 @@ def verify(ctxt={}, file_stream=None, signature=None):
         :iv: AES initialization vector used to encrypt payload
         :tag: AES GCM authentication code
     """
-    h = sha512()
-
-    b_file_stream = base64.b64encode(file_stream.encode())
-    h.update(b_file_stream)
-
-    # return a digest of the hash
-    digest = h.digest()
+    sigs_a = get_digests(file_stream)
 
     # Decrypt the signature using the KMS Key using the optional context
 
     plaintext_key = kms.decrypt(
-        CiphertextBlob=signature['ciphertext_key'],
+        CiphertextBlob=sigs_b['ciphertext_key'],
         EncryptionContext=ctxt
     ).get('Plaintext')
 
     decryptor = Cipher(
         algorithms.AES(plaintext_key),
-        modes.GCM(signature['iv'], signature['tag']),
+        modes.GCM(sigs_b['iv'], sigs_b['tag']),
         backend=default_backend()
     ).decryptor()
 
-    signature = decryptor.update(
-        signature['ciphertext']
-    ) + decryptor.finalize()
+    sigs_b = json.loads(
+        decryptor.update(
+            sigs_b['ciphertext']
+        ) + decryptor.finalize()
+    )
 
-    # Check the digest of the file as it exists against the provided signature.
-    if digest == signature:
+    if sigs_a == sigs_b:
         return {
             'status': 'valid',
-            'sig_b': base64.b64encode(digest),
-            'sig_a': base64.b64encode(signature)
+            'sigs_a': sigs_a,
+            'sigs_b': sigs_b
         }
     else:
         return {
             'status': 'invalid',
-            'sig_b': base64.b64encode(digest),
-            'sig_a': base64.b64encode(signature)
+            'sigs_a': sigs_a,
+            'sigs_b': sigs_b
         }
