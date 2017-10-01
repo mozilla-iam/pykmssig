@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name="pykmssig",
-      version="0.0.1",
+      version="0.0.2",
       author="Andrew Krug",
       author_email="andrewkrug@gmail.com",
       packages=["pykmssig"],
@@ -12,7 +12,7 @@ setup(name="pykmssig",
       install_requires=[
         'boto3',
         'cryptography',
-        'hashlib',
-        'python-decouple'
+        'python-decouple',
+        'aws-encryption-sdk'
       ]
   )

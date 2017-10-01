@@ -1,5 +1,4 @@
 from decouple import config
 
-KMS_SIGNING_KEY = config('KMS_SIGNING_KEY')
 
-VALIDATION_CIPHERS = config('VALIDATION_CIPHERS', 'sha512')
+SIGNING_KEY_ALIAS = config('SIGNING_KEY_ALIAS', default='alias/pykmssig')

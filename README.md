@@ -36,28 +36,22 @@ python setup.py install
 
 # Setting up your environment
 
-This looks for the environment variable KMS_SIGNING_KEY this should be the KMS_KEY_ID of
-the key you'd like to use for signing.
+This looks for the environment variable SIGNING_KEY_ALIAS this should be a precreated
+alias for the KMS key you'd like to use to sign.  If you've used the provided cloudformation
+stack template you need not change this.
 
 # Usage
 
 ``` python
 
 # Signing a payload
+from pykmssig import crypto
 
-from pykmssig import sign
+o = crypto.Operation()
 
-payload = "foobar"
+result = o.sign(plaintext={'foo': 'bar'})
 
-result = sign.sign(ctxt=None, file_stream=payload)
-
-"""Result returns the following data as bytes type."""
-{
-    'ciphertext': the_payloads_encrypted_signature,
-    'ciphertext_key': the_envelope_encryption_key,
-    'iv': initialization_vector,
-    'tag': authentication_context ( see kms grants )
-}
+# The result of this operation will be ciphertext.
 
 ```
 
@@ -67,20 +61,14 @@ Verifying the payload:
 
 # Verification
 
-from pykmssig import validate
+from pykmssig import crypto
 
-# Our payload in transit that we are validating again
-payload = "foobar"
+o = crypto.Operation()
 
-# This is your sig from before that you stashed somewhere
-signature = {
-    'ciphertext': the_payloads_encrypted_signature,
-    'ciphertext_key': the_envelope_encryption_key,
-    'iv': initialization_vector,
-    'tag': authentication_context ( see kms grants )
-}
-
-result = validate.verify(ctxt={}, file_stream=payload, signature=signature)
+result = o.verify(
+    ciphertext=ciphertext,
+    plaintext={'foo': 'bar'}
+)
 
 """Result returns a dictionary that looks as follows.""""
 {

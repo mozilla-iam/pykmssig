@@ -1,4 +1,5 @@
 boto3
 cryptography
-hashlib
 python-decouple
+aws-encryption-sdk
+moto
