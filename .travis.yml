@@ -10,8 +10,10 @@ before_install:
   - "echo region = us-west-2 >> /home/travis/.aws/config"
   - "echo output = json >> /home/travis/.aws/config"
   - pip install flake8
-  - flake8 pykmssig
+
 install:
   - pip install -r requirements.txt
   - python setup.py build
   - python setup.py install
+script:
+  - flake8 pykmssig
