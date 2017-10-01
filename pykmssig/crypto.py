@@ -99,4 +99,4 @@ class Operation(object):
 
     def _get_sts_client(self):
         if not self.sts_client:
-            return boto3.client('sts')
+            self.sts_client = boto3.client('sts')
