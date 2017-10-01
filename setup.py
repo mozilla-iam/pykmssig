@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name="pykmssig",
-      version="0.0.2",
+      version="0.0.3",
       author="Andrew Krug",
       author_email="andrewkrug@gmail.com",
       packages=["pykmssig"],

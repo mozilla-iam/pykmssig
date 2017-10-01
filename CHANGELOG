@@ -7,3 +7,7 @@ v0.0.2
 Add cloudformation stack for setting up signing keys.
 Move to aliases for key targetting.
 Switched to using aws cryptography SDK instead of using manual cryptography primitives.
+
+v.0.0.3
+
+Fix bug where sts client is sometimes not initialized.
