@@ -1,6 +1,10 @@
 # pykmssig
 A python library inspired by https://github.com/codahale/kmssig
 
+# Build Status
+
+[![Build Status](https://travis-ci.org/mozilla-iam/pykmssig.svg?branch=master)](https://travis-ci.org/mozilla-iam/pykmssig)
+
 # Why pykmssig?
 
 Sometimes you need to validate a message passing multiple AWS accounts and
