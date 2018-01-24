@@ -1,6 +1,10 @@
 import base64
 
-from hashlib import blake2b
+try:
+    from hashlib import blake2b
+except ImportError:
+    from pyblake2 import blake2b
+
 from hashlib import sha512
 
 

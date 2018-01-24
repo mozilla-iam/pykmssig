@@ -13,6 +13,7 @@ setup(name="pykmssig",
         'boto3',
         'cryptography',
         'python-decouple',
-        'aws-encryption-sdk'
+        'aws-encryption-sdk',
+        'pyblake2'
       ]
   )
