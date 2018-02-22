@@ -15,3 +15,7 @@ Fix bug where sts client is sometimes not initialized.
 v.0.0.4
 
 Add python 2.7 support.
+
+v.0.0.5
+
+Add config var for account id.
