@@ -11,3 +11,7 @@ Switched to using aws cryptography SDK instead of using manual cryptography prim
 v.0.0.3
 
 Fix bug where sts client is sometimes not initialized.
+
+v.0.0.4
+
+Add python 2.7 support.
