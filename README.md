@@ -5,6 +5,10 @@ A python library inspired by https://github.com/codahale/kmssig
 
 [![Build Status](https://travis-ci.org/mozilla-iam/pykmssig.svg?branch=master)](https://travis-ci.org/mozilla-iam/pykmssig)
 
+# We're in PyPi now
+
+`pip install pykmssig`
+
 # Why pykmssig?
 
 Sometimes you need to validate a message passing multiple AWS accounts and
@@ -49,11 +53,12 @@ stack template you need not change this.
 ``` python
 
 # Signing a payload
+import json
 from pykmssig import crypto
 
 o = crypto.Operation()
 
-result = o.sign(plaintext={'foo': 'bar'})
+result = o.sign(json.dumps({'foo': 'bar'}))
 
 # The result of this operation will be ciphertext.
 
@@ -64,14 +69,14 @@ Verifying the payload:
 ``` python
 
 # Verification
-
+import json
 from pykmssig import crypto
 
 o = crypto.Operation()
 
 result = o.verify(
     ciphertext=ciphertext,
-    plaintext={'foo': 'bar'}
+    plaintext=json.dumps({'foo': 'bar'})
 )
 
 """Result returns a dictionary that looks as follows.""""
