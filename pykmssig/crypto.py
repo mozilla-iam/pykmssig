@@ -7,7 +7,8 @@ from pykmssig import settings
 
 
 class Operation(object):
-    def __init__(self):
+    def __init__(self, boto_session=None):
+        self.boto_session = boto_session
         self.key_provider = None
         self.sts_client = None
 
@@ -80,7 +81,10 @@ class Operation(object):
         arn_template = 'arn:aws:kms:{region}:{account_id}:{alias}'
 
         # Create AWS KMS master key provider
-        kms_master_key_provider = aws_encryption_sdk.KMSMasterKeyProvider()
+        if self.boto_session is not None:
+            kms_master_key_provider = aws_encryption_sdk.KMSMasterKeyProvider(botocore_session=self.boto_session)
+        else:
+            kms_master_key_provider = aws_encryption_sdk.KMSMasterKeyProvider()
 
         # Find your AWS account ID
         if settings.SIGNING_KEY_ACCOUNT_ID is None:

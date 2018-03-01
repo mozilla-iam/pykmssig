@@ -1,25 +1,22 @@
 v0.0.1
-
 Initial prototype.
 
 v0.0.2
-
 Add cloudformation stack for setting up signing keys.
 Move to aliases for key targetting.
 Switched to using aws cryptography SDK instead of using manual cryptography primitives.
 
-v.0.0.3
-
+v0.0.3
 Fix bug where sts client is sometimes not initialized.
 
-v.0.0.4
-
+v0.0.4
 Add python 2.7 support.
 
-v.0.0.5
-
+v0.0.5
 Add config var for account id.
 
-v.0.0.6
+v0.0.6
+Fixed issue with settings not referencing self.
 
-Fixes issue with cross account-id
+v0.0.7
+Support passing a boto session in to support assumed roles.
