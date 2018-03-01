@@ -20,3 +20,7 @@ Fixed issue with settings not referencing self.
 
 v0.0.7
 Support passing a boto session in to support assumed roles.
+
+v0.0.8
+Fix bug in cryptography sdk default key provider.
+Add support for fallback key for tests.

@@ -82,7 +82,9 @@ class Operation(object):
 
         # Create AWS KMS master key provider
         if self.boto_session is not None:
-            kms_master_key_provider = aws_encryption_sdk.KMSMasterKeyProvider(botocore_session=self.boto_session)
+            kms_master_key_provider = aws_encryption_sdk.KMSMasterKeyProvider(
+                botocore_session=self.boto_session._session
+            )
         else:
             kms_master_key_provider = aws_encryption_sdk.KMSMasterKeyProvider()
 
