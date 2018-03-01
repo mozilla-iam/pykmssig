@@ -19,3 +19,7 @@ Add python 2.7 support.
 v.0.0.5
 
 Add config var for account id.
+
+v.0.0.6
+
+Fixes issue with cross account-id
