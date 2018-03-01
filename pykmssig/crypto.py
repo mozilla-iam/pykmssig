@@ -83,11 +83,11 @@ class Operation(object):
         kms_master_key_provider = aws_encryption_sdk.KMSMasterKeyProvider()
 
         # Find your AWS account ID
-        if SIGNING_KEY_ACCOUNT_ID is None:
+        if settings.SIGNING_KEY_ACCOUNT_ID is None:
             account_id = self.sts_client.get_caller_identity()['Account']
 
         else:
-            settings.SIGNING_KEY_ACCOUNT_ID
+            account_id = settings.SIGNING_KEY_ACCOUNT_ID
 
         # Add the KMS alias in each region to the master key provider
         for region in regions:
